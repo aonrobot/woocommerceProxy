@@ -38,6 +38,10 @@ app.use(cors());
 
 const router = new Router();
 
+router.get("/", (ctx, next) => {
+  ctx.body('ควยเจกโครตกาก มึงสามารถไปดูได้ว่ามี enpoint อะไรบ้างที่นี่ไิ่กร๊วก : <a href="https://woocommerce.github.io/woocommerce-rest-api-docs/?javascript#">https://woocommerce.github.io/woocommerce-rest-api-docs/?javascript#</a>')
+  await next()
+})
 
 router.get("/:path", async (ctx, next) => {
   ctx.status = HttpStatus.OK;

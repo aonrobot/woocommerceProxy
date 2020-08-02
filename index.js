@@ -38,12 +38,10 @@ app.use(cors());
 
 const router = new Router();
 
-router.get("/", async (ctx, next) => {
-  ctx.body('ควยเจกโครตกาก มึงสามารถไปดูได้ว่ามี enpoint อะไรบ้างที่นี่ไิ่กร๊วก : <a href="https://woocommerce.github.io/woocommerce-rest-api-docs/?javascript#">https://woocommerce.github.io/woocommerce-rest-api-docs/?javascript#</a>')
-  await next()
-})
+app.use(serve('./public'));
 
-router.get("/:path", async (ctx, next) => {
+
+router.get("/api/:path", async (ctx, next) => {
   ctx.status = HttpStatus.OK;
   try {
     const products = await wc.get(ctx.params.path)
@@ -54,7 +52,7 @@ router.get("/:path", async (ctx, next) => {
   await next();
 });
 
-router.get("/:path/:path2", async (ctx, next) => {
+router.get("/api/:path/:path2", async (ctx, next) => {
   ctx.status = HttpStatus.OK;
   try {
     const products = await wc.get(ctx.params.path + '/' + ctx.params.path2)
@@ -65,7 +63,7 @@ router.get("/:path/:path2", async (ctx, next) => {
   await next();
 });
 
-router.get("/:path/:path2/:path3", async (ctx, next) => {
+router.get("/api/:path/:path2/:path3", async (ctx, next) => {
   ctx.status = HttpStatus.OK;
   try {
     const products = await wc.get(ctx.params.path + '/' + ctx.params.path2 + '/' + ctx.params.path3)
@@ -77,7 +75,7 @@ router.get("/:path/:path2/:path3", async (ctx, next) => {
 });
 
 
-router.post("/:path", async (ctx, next) => {
+router.post("/api/:path", async (ctx, next) => {
   const path = ctx.params.path
   let data = ctx.request.body
 

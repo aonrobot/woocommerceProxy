@@ -52,7 +52,7 @@ router.get("/api/products/:id", async (ctx, next) => {
       }
     }
 
-    ctx.body = meta_data
+    ctx.body = products.data
   } catch(err) {
     ctx.body = err;
   }

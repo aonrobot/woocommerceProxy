@@ -40,8 +40,20 @@ const router = new Router();
 
 app.use(serve('./public'));
 
-router.get("/api/products/:id", async (ctx, next) => {
+router.use("/api/products/:id", async (ctx, next) => {
   const product_id = ctx.params.id
+
+  if ((/[A-Z][a-z]/ig).test(product_id)) {
+    console.log('eieie')
+    try {
+      const products = await wc.get('products/' + product_id)
+      ctx.body = products.data;
+      return ctx
+    } catch(err) {
+      ctx.body = err;
+    }
+  }
+
   try {
     const products = await wc.get('products/' + product_id)
     const meta_data = products.data.meta_data;
@@ -51,7 +63,6 @@ router.get("/api/products/:id", async (ctx, next) => {
         data.value = Object.values(data.value)
       }
     }
-
     ctx.body = products.data
   } catch(err) {
     ctx.body = err;

@@ -40,6 +40,23 @@ const router = new Router();
 
 app.use(serve('./public'));
 
+router.get("/api/products/:id", async (ctx, next) => {
+  const product_id = ctx.params.id
+  try {
+    const products = await wc.get('products/' + product_id)
+    const meta_data = products.data.meta_data;
+    
+    for (let data of meta_data) {
+      if (data.value.constructor === Object && data.key === '_product_addons') {
+        data.value = Object.values(data.value)
+      }
+    }
+
+    ctx.body = meta_data
+  } catch(err) {
+    ctx.body = err;
+  }
+})
 
 router.get("/api/:path", async (ctx, next) => {
   ctx.status = HttpStatus.OK;

@@ -120,6 +120,18 @@ router.post("/api/:path", async (ctx, next) => {
 
 })
 
+router.delete("/api/:path", async (ctx, next) => {
+  ctx.status = HttpStatus.OK;
+  const params = ctx.request.query
+  try {
+    const response = await wc.get(ctx.params.path + '?' + queryString(params))
+    ctx.body = response.data;
+  } catch(err) {
+    ctx.body = err;
+  }
+  await next();
+});
+
 app.use(router.routes()).use(router.allowedMethods());
 
 app.listen(PORT, function () {

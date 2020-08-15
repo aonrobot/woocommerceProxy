@@ -124,7 +124,7 @@ router.delete("/api/:path/:path2", async (ctx, next) => {
   ctx.status = HttpStatus.OK;
   const params = ctx.request.query
   try {
-    const response = await wc.get(ctx.params.path + '/' + ctx.params.path2 + '?' + queryString(params))
+    const response = await wc.delete(ctx.params.path + '/' + ctx.params.path2 + '?' + queryString(params))
     ctx.body = response.data;
   } catch(err) {
     ctx.body = err;

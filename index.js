@@ -40,11 +40,14 @@ const router = new Router();
 
 app.use(serve('./public'));
 
+const queryString = function(params) {
+  return Object.keys(params).map(key => key + '=' + params[key]).join('&');
+}
+
 router.use("/api/products/:id", async (ctx, next) => {
   const product_id = ctx.params.id
 
   if ((/[A-Z][a-z]/ig).test(product_id)) {
-    console.log('eieie')
     try {
       const products = await wc.get('products/' + product_id)
       ctx.body = products.data;
@@ -71,8 +74,9 @@ router.use("/api/products/:id", async (ctx, next) => {
 
 router.get("/api/:path", async (ctx, next) => {
   ctx.status = HttpStatus.OK;
+  const params = ctx.request.query
   try {
-    const products = await wc.get(ctx.params.path)
+    const products = await wc.get(ctx.params.path + '?' + queryString(params))
     ctx.body = products.data;
   } catch(err) {
     ctx.body = err;
